@@ -10,7 +10,7 @@ app.use(express.json());
 
 
 // mongoose.connect('mongodb://localhost:27017/')
-// mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect('mongodb://localhost:27017/');
 mongoose.connect('mongodb+srv://blog:8ZmuYp5gOvIwC27w@cluster0.ptufpob.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
 
