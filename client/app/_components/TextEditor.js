@@ -3,8 +3,13 @@ import React, { useState } from 'react'
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 
-const TextEditor = ({props}) => {
+const TextEditor = ({onChange}) => {
     const [content, setContent] = useState('');
+    // Handle content change and pass it to the parent component
+    const handleContentChange = (newValue) => {
+        setContent(newValue);
+        onChange(newValue); // Pass content to parent component
+    };
 
     const modules = {
         toolbar: [
@@ -26,7 +31,7 @@ const TextEditor = ({props}) => {
             <ReactQuill
                 value={content}
                 modules={modules} formats={formats}
-                onChange={newValue => setContent(newValue)}
+                onChange={handleContentChange}
                 className=''
                 theme='snow' />
         </div>

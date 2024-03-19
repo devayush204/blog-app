@@ -32,14 +32,14 @@ const register = () => {
 
 
    //function to generate random srting
-   const generateRandomString = () => {
-    const characters = "ABCDEFGHIJKLOMONOPjdjshdjshdj1878327831";
-    let result = '';
-    for (let i = 0; i < 10; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-  }
+  //  const generateRandomString = () => {
+  //   const characters = "ABCDEFGHIJKLOMONOPjdjshdjshdj1878327831";
+  //   let result = '';
+  //   for (let i = 0; i < 10; i++) {
+  //     result += characters.charAt(Math.floor(Math.random() * characters.length));
+  //   }
+  //   return result;
+  // }
 
 
     //function for logging in user the first time
@@ -47,9 +47,10 @@ const register = () => {
       e.preventDefault();
       try {
         const userCredential = await createUserWithEmailAndPassword(Auth, Email, password);
-        const id = generateRandomString().toString(); // generate id here
+        const userId = userCredential.user.uid;
+        // const id = generateRandomString().toString(); // generate id here
         console.log(userCredential);
-        await saveToFirestore(Email, password, id);
+        await saveToFirestore(Email, password, userId);
         router.push('/post');
       } catch (error) {
         console.error(error);
@@ -57,14 +58,14 @@ const register = () => {
     };
   
     //saving user info to firestore
-    const saveToFirestore = async (Email, password, id) => {
-      const userDocRef = doc(db, "Users", id);
+    const saveToFirestore = async (Email, password, userId) => {
+      const userDocRef = doc(db, "Users", userId);
       try {
         // Add user data
         await setDoc(userDocRef, {
-          Email,
-          password,
-          id,
+          Email:Email,
+          password:password,
+          id:userId
         });
       } catch (error) {
         console.error("Error saving to Firestore:", error);
