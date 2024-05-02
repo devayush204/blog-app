@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <FirebaseProvider>
-          <div className="md:p-4 px-10 py-4 flex flex-col">
+          <div className="py-4 flex flex-col">
             <Header />
             {children}
           </div>

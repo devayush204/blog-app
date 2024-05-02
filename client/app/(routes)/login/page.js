@@ -1,11 +1,14 @@
 "use client"
 import { Auth, db } from '@/models/Firebase_config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
 const login = () => {
+
   const router = useRouter()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,10 +45,12 @@ const signInPassword = async (e) => {
       if (isValidCredentials) {
           // If credentials are valid, sign in with Firebase Auth
           await signInWithEmailAndPassword(Auth, email, password);
+          toast.success("You have successfully logged in!");
           router.push('/post');
           console.log('Signed in successfully');
       } else {
           console.log('Invalid credentials');
+          toast.error("The provided credentials were not recognized.");
       }
   } catch (err) {
       console.error(err);
@@ -56,6 +61,17 @@ const signInPassword = async (e) => {
 };
   return (
     <section>
+       <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-lg">
           <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">Your pending Blogs</h1>

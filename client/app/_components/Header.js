@@ -16,7 +16,7 @@ const Header = () => {
         router.push("/register")
     }
     return (
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center px-10 md:px-5">
             <div className="md:block hidden">
                 <a href="/">
                     <Image src={"/logo.png"} width={180} height={130} alt="Logo" />
@@ -24,7 +24,7 @@ const Header = () => {
             </div>
 
             <div >
-                <p className="font-bold text-[40px]">Blogs Here</p>
+                <p className="font-bold text-[40px] hidden">Blogs Here</p>
             </div>
 
 

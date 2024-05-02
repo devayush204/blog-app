@@ -1,6 +1,8 @@
 "use client"
 import { Auth, db } from '@/models/Firebase_config';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
@@ -51,6 +53,7 @@ const register = () => {
         // const id = generateRandomString().toString(); // generate id here
         console.log(userCredential);
         await saveToFirestore(Email, password, userId);
+        toast.success("Successfully Registered")
         router.push('/post');
       } catch (error) {
         console.error(error);
@@ -69,11 +72,23 @@ const register = () => {
         });
       } catch (error) {
         console.error("Error saving to Firestore:", error);
+        toast.error('Failed to sign up!');
       }
     };
 
   return (
     <section>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-lg flex flex-col gap-4">
           <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">Start writing Blogs</h1>

@@ -29,26 +29,9 @@ export const useFirebase = () => {
     return useContext(FirebaseContext);
 };
 
-export const FirebaseProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const unsubscribe = Auth.onAuthStateChanged((authUser) => {
-            setUser(authUser);
-        });
-
-        return () => unsubscribe();
-    }, [])
-
-    const contextValue = {
-        user,
-    };
-    return (
-        <FirebaseContext.Provider value={contextValue}>
-            {children}
-        </FirebaseContext.Provider>
-    );
-}
+export const FirebaseProvider = (props) =>{
+    return <FirebaseContext.Provider>{props.children}</FirebaseContext.Provider>
+  }
 
 
 
