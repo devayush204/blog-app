@@ -7,15 +7,27 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TextEditor from '@/app/_components/TextEditor';
 import { useRouter } from 'next/navigation';
+import Select from 'react-select';
+// import 'react-select/dist/react-select.css';
 
 const NewPost = () => {
     const router = useRouter();
 
+    //states
     const [title, setTitle] = useState('');
     const [summary, setSummary] = useState('');
     const [content, setContent] = useState('');
     const [file, setFile] = useState(null); // State to hold the selected file
     const [progress, setProgress] = useState(0); // State to track upload progress
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    const categoryOptions = [
+        { value: 'sports', label: 'Sports' },
+        { value: 'technology', label: 'Technology' },
+        { value: 'entertainment', label: 'Entertainment' },
+        { value: 'life', label: 'Life' },
+        { value: 'anime', label: 'Anime' },
+    ];
 
     // Handle content change from the TextEditor component
     const handleContentChange = (newContent) => {
@@ -38,7 +50,7 @@ const NewPost = () => {
                 setProgress(progress);
                 if (progress === 100) {
                     getDownloadURL(uploadTask.snapshot.ref)
-                        .then((downloadURL) => savePostInfo(file, downloadURL))
+                        .then((downloadURL) => savePostInfo(file, downloadURL).then(console.log(downloadURL)))
                         .catch(error => console.error('Error:', error));
                 }
             },
@@ -76,7 +88,8 @@ const NewPost = () => {
                         content: content,
                         fileName: file?.name, // Add the file name to the post info
                         fileUrl: fileUrl, // Add the file URL to the post info
-                        createdAt: formattedDate // Add the created timestamp
+                        createdAt: formattedDate,
+                        category: selectedCategory?.value, // Add the created timestamp
                     };
 
                     // Save post info to Firestore
@@ -106,29 +119,29 @@ const NewPost = () => {
     const MAX_TITLE_WORDS = 15;
     const MAX_SUMMARY_WORDS = 25;
     const MAX_CONTENT_WORDS = 50;
-    
+
 
     const handleSavePost = (e) => {
         e.preventDefault();
-        
+
         // Check word count for title
         const titleWords = title.trim().split(/\s+/).length;
-        if (titleWords < MAX_TITLE_WORDS) {
+        if (titleWords > MAX_TITLE_WORDS) {
             return toast.error("Title should not exceed 50 words");
         }
-    
+
         // Check word count for summary
         const summaryWords = summary.trim().split(/\s+/).length;
-        if (summaryWords < MAX_SUMMARY_WORDS) {
+        if (summaryWords > MAX_SUMMARY_WORDS) {
             return toast.error("Summary should not exceed 50 words");
         }
-    
+
         // Check word count for content
         const contentWords = content.trim().split(/\s+/).length;
-        if (contentWords < MAX_CONTENT_WORDS) {
+        if (contentWords > MAX_CONTENT_WORDS) {
             return toast.error("Content should not exceed 50 words");
         }
-    
+
         // Proceed with saving the post
         if (file) {
             fileUpload(file);
@@ -143,7 +156,18 @@ const NewPost = () => {
                 <input value={title} onChange={(e) => setTitle(e.target.value)} className='border px-5 py-2 text-[18px]' type="text" placeholder='Title' />
                 <input value={summary} onChange={(e) => setSummary(e.target.value)} className='border px-5 py-2 text-[18px]' type="text" placeholder='Summary' />
                 <input onChange={handleFileChange} className='border px-5 py-2 text-[18px]' type="file" />
-                <div className='flex flex-col mt-6 '>
+                <div className='flex items-center gap-3 py-2'>
+                    <label>Category:</label>
+                    <Select
+                        options={categoryOptions}
+                        value={selectedCategory}
+                        onChange={(option) => setSelectedCategory(option)}
+                        placeholder="Select a category"
+                        className="react-select-container py-1"
+                        classNamePrefix="react-select"
+                    />
+                </div>
+                <div className='flex flex-col mt-3 '>
                     <p className='text-[18px] font-semibold '>Start writing...😁</p>
                     <TextEditor onChange={handleContentChange} />
                 </div>

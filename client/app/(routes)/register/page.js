@@ -68,7 +68,8 @@ const register = () => {
         await setDoc(userDocRef, {
           Email:Email,
           password:password,
-          id:userId
+          id:userId,
+          profileImg:"https://firebasestorage.googleapis.com/v0/b/blog-app-6dc84.appspot.com/o/file-upload%2Fuser.jpg?alt=media&token=c8a74dcd-4cb1-409b-9b84-a57663b289d2"
         });
       } catch (error) {
         console.error("Error saving to Firestore:", error);
@@ -92,10 +93,6 @@ const register = () => {
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-lg flex flex-col gap-4">
           <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">Start writing Blogs</h1>
-
-
-
-          
             <p className="text-center text-lg font-medium">Sign in to your account</p>
 
             <div>
